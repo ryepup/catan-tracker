@@ -6,14 +6,18 @@
   <style>
     body {background-color:black; color:white;}
     button {float:left; width:90px; height:100px;}
+    #stats {border-top:solid white 2px; font-size:1.1em; padding-top:5px;}
   </style>
   <script src="jquery.min.js" type="text/javascript" />
   <script type="text/javascript" src="catan.js" />
   
 </head>
   <body>
-    <div id="numbers">
-      <div style="clear:both;"/>
-    </div>
+    <div id="numbers"></div>
+    <div style="clear:both;"></div>
+    <p id="stats">
+      Last Roll:<span id="last-roll">0</span>
+      N=<span id="rolls">0</span>
+    </p>
   </body>
 </html>

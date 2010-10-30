@@ -1,7 +1,8 @@
 
 * game stats at the bottom
+  CLOCK: [2010-10-30 Sat 16:41]--[2010-10-30 Sat 17:17] =>  0:36
 ** total time
-** # rolls
+** DONE # rolls
 ** time since last roll
 * color the buttons
 ** blue for cold
