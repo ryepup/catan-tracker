@@ -5,8 +5,7 @@ $(function(){
       var rolls = 0;
       var rollHistory = [];
       var rollHistogram = {};
-      var updateStats = function(die){
-
+      var updateBoard = function(die){
 	  rollHistory.push(die);
 	  rollDisplay.text(rollHistory.length);
 	  rollHistogram[die]++;
@@ -17,14 +16,12 @@ $(function(){
 	  var btn = $('<button>');
 	  btn.append($("<strong>").append(i));
 	  btn.append($("<div>").addClass("count").append("0"));
-	  (function(die){
-	       btn.click(function(){
-			     var cnt = parseInt($('.count', this).text());
-			     $('.count', this).text(cnt+1);
-			     updateStats(die);
-			 });
-	       
-	  })(i); //jump through hoops to close in the die value
+	  btn.data('roll', i);
+	  btn.click(function(){
+			var cnt = parseInt($('.count', this).text());
+			$('.count', this).text(cnt+1);
+			updateBoard($(this).data('roll'));
+		    });
 	  nums.append(btn);
       }
   });

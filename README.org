@@ -5,6 +5,7 @@
 ** DONE # rolls
 ** time since last roll
 * color the buttons
+  CLOCK: [2010-10-30 Sat 17:47]--[2010-10-30 Sat 17:56] =>  0:09
 ** blue for cold
 ** red for hot
 * per-button stats
