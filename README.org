@@ -1,0 +1,11 @@
+
+* game stats at the bottom
+** total time
+** # rolls
+** time since last roll
+* color the buttons
+** blue for cold
+** red for hot
+* per-button stats
+  list expected value based on global rolls
+  
