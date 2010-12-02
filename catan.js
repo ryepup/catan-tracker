@@ -19,36 +19,49 @@ $(function(){
 
       var rollHistory = [];
       var rollHistogram = {};
-    
-      try{
-	  rollHistory = $.parseJSON(localStorage.rollHistory) || [];
-	  rollHistogram = $.parseJSON(localStorage.rollHistogram) || {};    
-      } catch (x) { }
+      var rolls = 0;
 
-      var rolls = rollHistory.length;
+      var loadState = function(){
+	  try{
+	      rollHistory = $.parseJSON(localStorage.rollHistory) || [];
+	      rollHistogram = $.parseJSON(localStorage.rollHistogram) || {};    
+	  } catch (x) { }
+	  rolls = rollHistory.length;	  
+	  updateEVs();
+      };
 
       var updateEVs = function(){
 	  $('button').each(function(idx, elem){
 			       var btn = $(elem);
 			       var roll = parseInt(btn.data('roll'));
 			       var ev = rollHistory.length * probs[roll];
-			       console.log(roll, probs[roll], ev, rollHistory.length);
 			       $('.ev', btn).text(ev.toString().substring(0,5));
+			       $('.count', btn).text(rollHistogram[roll]);
 			   });
-
-	  
-      };
-      var updateStats = function(){
 	  lastRoll.text(rollHistory[rollHistory.length-1]);
 	  rollDisplay.text(rollHistory.length);	  
       };
+
+      var undoInterval = null;
       var updateBoard = function(die){
 	  rollHistory.push(die);
 	  rollHistogram[die]++;
-	  updateStats();
 	  updateEVs();
-	  localStorage.rollHistory = $.toJSON(rollHistory);
-	  localStorage.rollHistogram = $.toJSON(rollHistogram);
+	  var undoSecs = 5;
+	  var undobtn = $('#undo');
+	  undobtn.attr('disabled', null).text('Undo (' + undoSecs + ')');
+	  clearInterval(undoInterval);
+	  undoInterval = setInterval(function(){
+					 undoSecs--;
+					 undobtn.text('Undo (' + undoSecs + ')');
+					 if(undoSecs == 0){
+					     localStorage.rollHistory = $.toJSON(rollHistory);
+					     localStorage.rollHistogram = $.toJSON(rollHistogram);
+					     console.log('Saved');
+					     clearInterval(undoInterval);
+					     undobtn.text('Undo');
+					 }
+				     }, 1000);
       };
       for(var i =2; i<=12; i++){
 	  if(rollHistogram[i] === undefined)
@@ -61,13 +74,10 @@ $(function(){
 	  btn.data('roll', i);
 	  btn.click(function(){
 			var cnt = parseInt($('.count', this).text());
-			$('.count', this).text(cnt+1);
 			updateBoard($(this).data('roll'));
 		    });
 	  nums.append(btn);
       }
-      updateEVs();
-      updateStats();
       $('#new-game').click(function(){
 			      if(confirm('Start new game?')){
 				  delete localStorage.rollHistory;
@@ -75,4 +85,10 @@ $(function(){
 				  document.location = ".";
 			      } 
 			   });
+      $('#undo').click(function(){
+			   clearInterval(undoInterval);
+			   loadState();
+			   $(this).attr('disabled', 'true').text('Undo');
+		       });
+      loadState();
   });
