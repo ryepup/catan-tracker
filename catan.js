@@ -72,7 +72,7 @@ $(function(){
 			      if(confirm('Start new game?')){
 				  delete localStorage.rollHistory;
 				  delete localStorage.rollHistogram;
-				  document.location = "/";
+				  document.location = ".";
 			      } 
 			   });
   });
