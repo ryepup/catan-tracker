@@ -23,8 +23,15 @@ $(function(){
 
       var loadState = function(){
 	  try{
-	      rollHistory = $.parseJSON(localStorage.rollHistory) || [];
-	      rollHistogram = $.parseJSON(localStorage.rollHistogram) || {};    
+	      if(localStorage.rollHistory){
+		  rollHistory = $.parseJSON(localStorage.rollHistory);
+		  console.log('Loaded ', localStorage.rollHistory);
+	      }
+	      if(localStorage.rollHistogram){
+		  rollHistogram = $.parseJSON(localStorage.rollHistogram);
+		  console.log('Loaded ', localStorage.rollHistogram);
+	      }
+	 
 	  } catch (x) { }
 	  rolls = rollHistory.length;	  
 	  updateEVs();
@@ -59,7 +66,7 @@ $(function(){
 					     localStorage.rollHistogram = $.toJSON(rollHistogram);
 					     console.log('Saved');
 					     clearInterval(undoInterval);
-					     undobtn.text('Undo');
+					     undobtn.text('Undo').attr('disabled', true);
 					 }
 				     }, 1000);
       };
@@ -80,8 +87,11 @@ $(function(){
       }
       $('#new-game').click(function(){
 			      if(confirm('Start new game?')){
-				  delete localStorage.rollHistory;
-				  delete localStorage.rollHistogram;
+				  localStorage.rollHistory = $.toJSON([]);
+				  for(var i =2; i<=12; i++){
+				      rollHistogram[i] = 0;
+				  }
+				  localStorage.rollHistogram = $.toJSON(rollHistogram);
 				  document.location = ".";
 			      } 
 			   });
