@@ -38,12 +38,37 @@ $(function(){
       };
 
       var updateEVs = function(){
-	  $('button').each(function(idx, elem){
-			       var btn = $(elem);
-			       var roll = parseInt(btn.data('roll'));
-			       var ev = rollHistory.length * probs[roll];
-			       $('.ev', btn).text(ev.toString().substring(0,5));
-			       $('.count', btn).text(rollHistogram[roll]);
+	  $('button.dice').each(function(idx, elem){
+				    var btn = $(elem);
+				    var roll = parseInt(btn.data('roll'));
+				    var ev = rollHistory.length * probs[roll];
+				    $('.ev', btn).text(ev.toString().substring(0,5));
+				    $('.count', btn).text(rollHistogram[roll]);
+				    var diff = rollHistogram[roll] - ev;
+				    //console.log(rollHistogram[roll], ev, diff);
+				    if(Math.abs(diff) < 1){
+					btn.css('background-color', "rgb(182, 167, 146)");
+				    }else if (diff < -2) {
+					btn.css('background-color', "rgb(182, 167, 186)");
+				    }
+				    else if (diff < -4){
+				    	btn.css('background-color', "rgb(182, 167, 226)");
+				    }
+				    else if (diff < -6){
+				    	btn.css('background-color', "rgb(182, 167, 255)");
+				    }
+				    else if (diff > 6){
+				    	btn.css('background-color', "rgb(255, 167, 146)");
+				    }
+				    else if (diff > 4){
+				    	btn.css('background-color', "rgb(222, 167, 146)");
+				    }
+				    else if (diff > 2) {
+					btn.css('background-color', "rgb(202, 167, 146)");
+				    }
+
+
+				    
 			   });
 	  lastRoll.text(rollHistory[rollHistory.length-1]);
 	  rollDisplay.text(rollHistory.length);	  
@@ -74,6 +99,7 @@ $(function(){
 	  if(rollHistogram[i] === undefined)
 	      rollHistogram[i] = 0; //initialize the histogram
 	  var btn = $('<button>');
+	  btn.addClass('dice');
 	  btn.append($("<strong>").append(i));
 	  btn.append($('<br>'));
 	  btn.append($("<span>").addClass("count").append(rollHistogram[i]));
