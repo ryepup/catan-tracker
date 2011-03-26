@@ -80,9 +80,9 @@ $(function(){
 	  }
 	  
 	  for(var i=2; i<=12; i++){
-	      var ev = Math.round(rollHistory.length * probs[i]);
-	      if (maxFreq < ev){
-		  maxFreq = ev;
+	      var ev = rollHistory.length * probs[i];
+	      if (maxFreq < Math.round(ev)){
+		  maxFreq = Math.round(ev);
 	      }
 	      chartOpts.chd = chartOpts.chd + 
 		  (i == 2 ? '|' : ',') 
