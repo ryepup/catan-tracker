@@ -90,7 +90,6 @@ $(function(){
 	  btn.click(function(){
 			var cnt = parseInt($('.count', this).text());
 			updateBoard($(this).data('roll'));
-			$(this).effect('pulsate');
 		    });
 	  nums.append(btn);
       }
