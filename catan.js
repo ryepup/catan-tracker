@@ -54,7 +54,7 @@ $(function(){
 					var blue = Math.round(lerp(diff/-6, 146, 255));
 					btn.css('background-color', "rgb(182, 167, "+ blue +")");
 				    }else{
-					var red = Math.round(lerp(diff/6, 146, 255));
+					var red = Math.round(lerp(diff/6, 182, 255));
 					btn.css('background-color', "rgb(" + red + ", 167, 146)");
 				    }
 			   });
@@ -90,6 +90,7 @@ $(function(){
 	  btn.click(function(){
 			var cnt = parseInt($('.count', this).text());
 			updateBoard($(this).data('roll'));
+			$(this).effect('pulsate');
 		    });
 	  nums.append(btn);
       }
