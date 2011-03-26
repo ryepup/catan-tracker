@@ -20,6 +20,7 @@ $(function(){
       var rollHistory = [];
       var rollHistogram = {};
       var rolls = 0;
+      var undoHistory = [];
 
       var loadState = function(){
 	  try{
@@ -74,27 +75,21 @@ $(function(){
 	  rollDisplay.text(rollHistory.length);	  
       };
 
-      var undoInterval = null;
       var updateBoard = function(die){
+	  undoHistory.push({			       
+			       rollHistory: $.toJSON(rollHistory),
+			       rollHistogram: $.toJSON(rollHistogram)
+			   });
+	  $('#undo').attr('disabled', null);
+
 	  rollHistory.push(die);
 	  rollHistogram[die]++;
 	  updateEVs();
-	  var undoSecs = 5;
-	  var undobtn = $('#undo');
-	  undobtn.attr('disabled', null).text('Undo (' + undoSecs + ')');
-	  clearInterval(undoInterval);
-	  undoInterval = setInterval(function(){
-					 undoSecs--;
-					 undobtn.text('Undo (' + undoSecs + ')');
-					 if(undoSecs == 0){
-					     localStorage.rollHistory = $.toJSON(rollHistory);
-					     localStorage.rollHistogram = $.toJSON(rollHistogram);
-					     console.log('Saved');
-					     clearInterval(undoInterval);
-					     undobtn.text('Undo').attr('disabled', true);
-					 }
-				     }, 1000);
+
+	  localStorage.rollHistory = $.toJSON(rollHistory);
+	  localStorage.rollHistogram = $.toJSON(rollHistogram);
       };
+
       for(var i =2; i<=12; i++){
 	  if(rollHistogram[i] === undefined)
 	      rollHistogram[i] = 0; //initialize the histogram
@@ -122,9 +117,15 @@ $(function(){
 			      } 
 			   });
       $('#undo').click(function(){
-			   clearInterval(undoInterval);
+			   var hist = undoHistory.pop();
+			   console.log('undoing', hist);
+			   localStorage.rollHistory = hist.rollHistory;
+			   localStorage.rollHistogram = hist.rollHistogram;
 			   loadState();
-			   $(this).attr('disabled', 'true').text('Undo');
+			   if (undoHistory.length == 0){
+			       $(this).attr('disabled', 'true');			       
+			   }
+
 		       });
       loadState();
   });
