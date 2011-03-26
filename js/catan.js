@@ -58,8 +58,30 @@ $(function(){
 					btn.css('background-color', "rgb(" + red + ", 167, 146)");
 				    }
 			   });
+
 	  lastRoll.text(rollHistory[rollHistory.length-1]);
 	  rollDisplay.text(rollHistory.length);	  
+
+	  var chartOpts = {
+	      cht:'bvs',
+	      chs:'90x100',
+	      chco:'4d89f9',
+	      chbh:'a',
+	      chf:'bg,s,000000ff',
+	      chd:'t:' + rollHistogram[2]
+	  };
+	  var maxFreq = rollHistogram[2];
+	  for(var i=3; i<=12; i++){
+	      if (maxFreq < rollHistogram[i]){
+		  maxFreq = rollHistogram[i];
+	      }
+	      chartOpts.chd = chartOpts.chd + ',' + rollHistogram[i];
+	  }
+	  chartOpts.chds = '0,' + maxFreq;
+	  var url = "http://chart.googleapis.com/chart?" + $.param(chartOpts);
+
+	  $('#chart img').attr('src', url);
+
       };
 
       var updateBoard = function(die){
