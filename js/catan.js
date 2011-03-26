@@ -68,7 +68,8 @@ $(function(){
 	      chco:'4d89f9',
 	      chbh:'a',
 	      chf:'bg,s,000000ff',
-	      chd:'t:' + rollHistogram[2]
+	      chd:'t1:' + rollHistogram[2],
+	      chm:'D,ff0000,1,0,2'
 	  };
 	  var maxFreq = rollHistogram[2];
 	  for(var i=3; i<=12; i++){
@@ -77,9 +78,19 @@ $(function(){
 	      }
 	      chartOpts.chd = chartOpts.chd + ',' + rollHistogram[i];
 	  }
+	  
+	  for(var i=2; i<=12; i++){
+	      var ev = Math.round(rollHistory.length * probs[i]);
+	      if (maxFreq < ev){
+		  maxFreq = ev;
+	      }
+	      chartOpts.chd = chartOpts.chd + 
+		  (i == 2 ? '|' : ',') 
+		  + ev;
+	  }
+
 	  chartOpts.chds = '0,' + maxFreq;
 	  var url = "http://chart.googleapis.com/chart?" + $.param(chartOpts);
-
 	  $('#chart img').attr('src', url);
 
       };
